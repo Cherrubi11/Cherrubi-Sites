@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✧ cherrubi.sites.commissions ✧</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu&family=Indie+Flower&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cherry-pink: #ffcdd2;
+            --soft-blue: #e1f5fe;
+            --honey: #fff9c4;
+            --mint-text: #4db6ac;
+            --main-border: #ef9a9a;
+            --text-color: #5d4037;
+        }
+
+        /* --- Dotted Background --- */
+        body {
+            background-color: #fff5f5;
+            background-image: radial-gradient(var(--main-border) 1px, transparent 1px);
+            background-size: 25px 25px;
+            font-family: 'Gaegu', cursive;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 120px 0;
+        }
+
+        /* --- POPUP STYLES --- */
+        .popup-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            background: white;
+            border: 3px solid var(--main-border);
+            border-radius: 25px;
+            box-shadow: 8px 8px 0px var(--cherry-pink);
+            z-index: 100;
+            padding: 20px;
+            animation: pop 0.3s ease-out;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        @keyframes pop {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .popup-close {
+            float: right;
+            cursor: pointer;
+            background: var(--cherry-pink);
+            color: white;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 205, 210, 0.3);
+            z-index: 90;
+        }
+
+        /* --- GALLERY GRID --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .gallery-item {
+            width: 100%;
+            height: 100px;
+            background: var(--soft-blue);
+            border: 2px solid var(--cherry-pink);
+            border-radius: 10px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+            border-style: solid;
+        }
+
+        /* --- Scalloped Outer Frame --- */
+        .outer-frame {
+            background: white;
+            padding: 15px;
+            border-radius: 40px;
+            background-image: radial-gradient(circle at 15px 15px, var(--cherry-pink) 12px, transparent 13px);
+            background-size: 30px 30px;
+            box-shadow: 10px 10px 0px rgba(239, 154, 154, 0.2);
+            position: relative;
+        }
+
+        .main-container {
+            background: white;
+            width: 820px; 
+            border: 3px solid var(--main-border);
+            border-radius: 30px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            position: relative;
+            z-index: 5;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+
+        /* --- DETACHED SIDE BOXES --- */
+        .detached-card {
+            position: absolute;
+            background: white;
+            border: 2px solid var(--main-border);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 4px 4px 0px var(--cherry-pink);
+            z-index: 10;
+            width: 150px;
+        }
+
+        .tag {
+            background: var(--main-border);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        /* --- Sidebar & Navigation --- */
+        .sidebar {
+            background: var(--soft-blue);
+            border-right: 3px dashed var(--main-border);
+            padding: 30px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            border-radius: 30px 0 0 30px;
+        }
+
+        .logo-frame {
+            width: 170px;
+            height: 170px;
+            background: white;
+            border: 2px solid var(--main-border);
+            padding: 5px;
+            box-shadow: 5px 5px 0px var(--cherry-pink);
+            transform: rotate(-3deg);
+        }
+
+        .nav-btn {
+            background: white;
+            cursor: pointer;
+            color: var(--text-color);
+            padding: 8px;
+            text-align: center;
+            border: 2px solid var(--main-border);
+            border-radius: 15px;
+            width: 90%;
+            font-size: 0.95rem;
+            box-shadow: 2px 2px 0 var(--cherry-pink);
+            transition: 0.2s;
+            font-family: 'Gaegu';
+        }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 4px 4px 0 var(--cherry-pink); }
+
+        /* --- Form & Content --- */
+        .content { padding: 40px; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid var(--main-border);
+            border-radius: 10px;
+            font-family: 'Gaegu';
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        button[type="submit"] {
+            background: var(--main-border);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Gaegu';
+            font-size: 1.1rem;
+            width: 100%;
+        }
+
+        footer {
+            grid-column: span 2;
+            background: var(--cherry-pink);
+            color: var(--text-color);
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8rem;
+            border-radius: 0 0 25px 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+
+    <div class="popup-box" id="info-popup">
+        <div class="popup-close" onclick="closePopup()">X</div>
+        <div class="tag">Comm Info</div>
+        <p>I specialize in high-clutter, aesthetic, and interactive layouts. Turnaround time is usually 1-2 weeks!</p>
+    </div>
+
+    <div class="popup-box" id="queue-popup">
+        <div class="popup-close" onclick="closePopup()">X</div>
+        <div class="tag">Live Queue</div>
+        <p>1. Open ✨<br>2. Open ✨<br>3. Closed ❌</p>
+    </div>
+
+    <div class="popup-box" id="tos-popup">
+        <div class="popup-close" onclick="closePopup()">X</div>
+        <div class="tag" style="background:var(--mint-text)">T.O.S</div>
+        <p style="font-size:0.8rem;">- Payment via PayPal/Ko-fi/Venmo/Cashapp upfront.<br>- No refunds once coding starts.<br>- Credit must remain in footer.</p>
+    </div>
+
+    <div class="popup-box" id="price-popup">
+        <div class="popup-close" onclick="closePopup()">X</div>
+        <div class="tag">Price List</div>
+        <p>✦ One Page: $15<br>✦ Multiple Pages: $25+<br>✦ Social Profile: $10<br>✦ Custom: Inquire!</p>
+    </div>
+
+    <div class="popup-box" id="gallery-popup">
+        <div class="popup-close" onclick="closePopup()">X</div>
+        <div class="tag" style="background:var(--soft-blue); color:var(--text-color)">Portfolio</div>
+        <p style="font-size: 0.8rem;">Click an image to view full size!</p>
+        <div class="gallery-grid">
+            <a href="images/1Pink.png" target="_blank"><img class="gallery-item" src="images/1Pink.png" alt="Example 1"></a>
+            <a href="images/2Mint.png" target="_blank"><img class="gallery-item" src="images/2Mint.png" alt="Example 2"></a>
+            <a href="images/3Vintage.png" target="_blank"><img class="gallery-item" src="images/3Vintage.png" alt="Example 3"></a>
+            <a href="images/prev4.jpg" target="_blank"><img class="gallery-item" src="images/prev4.jpg" alt="Example 4"></a>
+        </div>
+    </div>
+
+    <div class="detached-card" style="left: -180px; top: 40px; transform: rotate(-4deg); background: var(--honey);">
+        <div class="tag">Quick Status</div>
+        <div style="font-size: 0.85rem;">Currently: 🟢 Open</div>
+    </div>
+
+    <div class="outer-frame">
+        <div class="main-container">
+            
+            <div class="sidebar">
+                <div class="logo-frame">
+                    <img src="images/icon.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Cherrubi Logo">
+                </div>
+                
+                <h2 style="font-family:'Pinyon Script'; font-size: 2.2rem; margin: 5px 0 0 0;">Cherrubi Sites</h2>
+
+                <nav style="display:flex; flex-direction:column; gap:8px; width:100%; margin-top:10px;">
+                    <div onclick="showPopup('info-popup')" class="nav-btn">Commission Info</div>
+                    <div onclick="showPopup('queue-popup')" class="nav-btn">Queue Status</div>
+                    <div onclick="showPopup('tos-popup')" class="nav-btn">Terms of Service</div>
+                    <div onclick="showPopup('price-popup')" class="nav-btn">Detailed Prices</div>
+                    <div onclick="showPopup('gallery-popup')" class="nav-btn" style="background:var(--honey)">View Portfolio</div>
+                </nav>
+
+                <img src="images/mascot.png" style="width:100px; margin-top:20px; filter: drop-shadow(2px 2px 0 white);">
+            </div>
+
+            <div class="content">
+                <h1 style="font-family:'Pinyon Script'; font-size:4.5rem; margin:0; color: var(--main-border);">Inquiry Form</h1>
+                <p style="margin-top:-10px; opacity:0.7;">Fill out the scroll below to start your project!</p>
+
+                <form action="https://formspree.io/f/xdawkake" method="POST">
+                    <label>Your Name / Handle:</label>
+                    <input type="text" name="name" required placeholder="Cherrubi Lover...">
+
+                    <label>Your Email:</label>
+                    <input type="email" name="_replyto" required placeholder="email@example.com">
+
+                    <label>Project Type:</label>
+                    <select name="project_type">
+                        <option value="one-page">One Page Layout ($15)</option>
+                        <option value="multi-page">Multiple Pages ($25+)</option>
+                        <option value="profile-layout">Social Profile Layout ($10)</option>
+                        <option value="custom">Other / Custom Inquiry</option>
+                    </select>
+
+                    <label>Description & Aesthetic:</label>
+                    <textarea name="message" rows="4" required placeholder="Tell me about your dream project..."></textarea>
+
+                    <button type="submit">Send Inquiry ❤︎</button>
+                </form>
+
+                <div style="background:var(--soft-blue); color:var(--text-color); border-radius:50px; padding:5px 15px; width:fit-content; margin-top:20px; display:flex; align-items:center; gap:10px; font-size: 0.8rem; border: 1px solid var(--main-border);">
+                    <span>♫</span>
+                    <marquee scrollamount="2" style="width:150px;">Now Designing: Cherrubi Sites</marquee>
+                </div>
+            </div>
+
+            <footer>☆ © 2026 Cherrubi Sites ☆</footer>
+        </div>
+    </div>
+
+    <script>
+        function showPopup(id) {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById(id).style.display = 'block';
+        }
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            var popups = document.getElementsByClassName('popup-box');
+            for(var i=0; i<popups.length; i++) {
+                popups[i].style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
