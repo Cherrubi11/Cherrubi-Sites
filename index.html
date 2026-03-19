@@ -15,7 +15,6 @@
             --text-color: #5d4037;
         }
 
-        /* --- Dotted Background --- */
         body {
             background-color: #fff5f5;
             background-image: radial-gradient(var(--main-border) 1px, transparent 1px);
@@ -30,7 +29,6 @@
             padding: 120px 0;
         }
 
-        /* --- POPUP STYLES --- */
         .popup-box {
             display: none;
             position: fixed;
@@ -75,13 +73,13 @@
             z-index: 90;
         }
 
-        /* --- GALLERY GRID --- */
         .gallery-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-top: 10px;
         }
+
         .gallery-item {
             width: 100%;
             height: 100px;
@@ -92,13 +90,13 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
+
         .gallery-item:hover {
             transform: scale(1.05);
             box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
             border-style: solid;
         }
 
-        /* --- Scalloped Outer Frame --- */
         .outer-frame {
             background: white;
             padding: 15px;
@@ -111,7 +109,7 @@
 
         .main-container {
             background: white;
-            width: 820px; 
+            width: 820px;
             border: 3px solid var(--main-border);
             border-radius: 30px;
             display: grid;
@@ -121,7 +119,6 @@
             background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
         }
 
-        /* --- DETACHED SIDE BOXES --- */
         .detached-card {
             position: absolute;
             background: white;
@@ -143,7 +140,6 @@
             margin-bottom: 8px;
         }
 
-        /* --- Sidebar & Navigation --- */
         .sidebar {
             background: var(--soft-blue);
             border-right: 3px dashed var(--main-border);
@@ -179,9 +175,9 @@
             transition: 0.2s;
             font-family: 'Gaegu';
         }
+
         .nav-btn:hover { transform: translateY(-2px); box-shadow: 4px 4px 0 var(--cherry-pink); }
 
-        /* --- Form & Content --- */
         .content { padding: 40px; }
 
         input, select, textarea {
@@ -217,9 +213,67 @@
             font-size: 0.8rem;
             border-radius: 0 0 25px 25px;
         }
+
+        #music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border: 2px solid #ef9a9a;
+            border-radius: 20px;
+            padding: 8px 14px;
+            box-shadow: 3px 3px 0 #ffcdd2;
+            z-index: 999;
+            font-family: 'Gaegu', cursive;
+            font-size: 0.9rem;
+            color: #5d4037;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #music-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Gaegu', cursive;
+            font-size: 0.9rem;
+            color: #5d4037;
+            padding: 0;
+        }
+
+        #volume-slider {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 4px;
+            border-radius: 5px;
+            background: #ffcdd2;
+            outline: none;
+            margin: 0;
+            padding: 0;
+            border: none;
+            margin-bottom: 0;
+        }
+
+        #volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef9a9a;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+
+    <audio id="bg-music" src="Cherry.mp3" loop></audio>
+
+    <div id="music-player">
+        <button id="music-toggle" onclick="toggleMusic()">♫ play</button>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" oninput="changeVolume(this.value)">
+    </div>
 
     <div class="overlay" id="overlay" onclick="closePopup()"></div>
 
@@ -266,12 +320,12 @@
 
     <div class="outer-frame">
         <div class="main-container">
-            
+
             <div class="sidebar">
                 <div class="logo-frame">
                     <img src="images/icon.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Cherrubi Logo">
                 </div>
-                
+
                 <h2 style="font-family:'Pinyon Script'; font-size: 2.2rem; margin: 5px 0 0 0;">Cherrubi Sites</h2>
                 <a href="https://ko-fi.com/N4N11FR6XG" target="_blank" style="text-decoration: none; width: 90%;">
                     <div class="nav-btn" style="background: #29abe0; color: white; width: 100%; box-sizing: border-box;">
@@ -302,12 +356,12 @@
                     <input type="email" name="_replyto" required placeholder="email@example.com">
 
                     <label>Project Type:</label>
-                        <select name="project_type">
-                            <option value="one-page">One Page Layout ($8)</option>
-                            <option value="multi-page">Multiple Pages ($15+)</option>
-                            <option value="profile-layout">Social Profile Layout ($5)</option>
-                            <option value="custom">Other / Custom Inquiry</option>
-                        </select>
+                    <select name="project_type">
+                        <option value="one-page">One Page Layout ($8)</option>
+                        <option value="multi-page">Multiple Pages ($15+)</option>
+                        <option value="profile-layout">Social Profile Layout ($5)</option>
+                        <option value="custom">Other / Custom Inquiry</option>
+                    </select>
 
                     <label>Description & Aesthetic:</label>
                     <textarea name="message" rows="4" required placeholder="Tell me about your dream project..."></textarea>
@@ -326,17 +380,39 @@
     </div>
 
     <script>
+        var playing = false;
+        var music = document.getElementById('bg-music');
+        music.volume = 0.5;
+
+        function toggleMusic() {
+            var btn = document.getElementById('music-toggle');
+            if (playing) {
+                music.pause();
+                btn.innerHTML = '♫ play';
+            } else {
+                music.play();
+                btn.innerHTML = '♪ pause';
+            }
+            playing = !playing;
+        }
+
+        function changeVolume(val) {
+            music.volume = val;
+        }
+
         function showPopup(id) {
             document.getElementById('overlay').style.display = 'block';
             document.getElementById(id).style.display = 'block';
         }
+
         function closePopup() {
             document.getElementById('overlay').style.display = 'none';
             var popups = document.getElementsByClassName('popup-box');
-            for(var i=0; i<popups.length; i++) {
+            for (var i = 0; i < popups.length; i++) {
                 popups[i].style.display = 'none';
             }
         }
     </script>
+
 </body>
 </html>
